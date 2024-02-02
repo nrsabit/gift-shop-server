@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import router from './app/routes';
+import errorHandler from './app/middlewares/errorHandler';
 
 const app: Application = express();
 
@@ -14,5 +15,8 @@ app.use('/api', router);
 app.get('/', async (req: Request, res: Response) => {
   res.send('Gift Shop is Running');
 });
+
+// error handler. 
+app.use(errorHandler)
 
 export default app;
