@@ -2,7 +2,7 @@ export type TProduct = {
   productName: string;
   productPrice: number;
   productQuantity: number;
-  occation: string;
+  occasion: string;
   category: string;
   theme: string;
   brand: string;
