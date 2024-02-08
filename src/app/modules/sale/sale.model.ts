@@ -6,6 +6,7 @@ const saleSchema = new Schema<TSale>(
     product: { type: Schema.Types.ObjectId, required: true },
     quantity: { type: Number, required: true },
     salePrice: { type: Number, required: true },
+    buyerName: { type: String, required: true },
   },
   { timestamps: true },
 );

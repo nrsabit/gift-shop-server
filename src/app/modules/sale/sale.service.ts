@@ -14,6 +14,10 @@ const createSaleService = async (payload: TSale) => {
       throw new Error(`Only ${product?.productQuantity} Items Available..!!`);
     }
 
+    // generate the price by quantity.
+    const salePrice = product!.productPrice * payload.quantity;
+    payload.salePrice = salePrice;
+
     // update the product quantity
     await ProductModel.findByIdAndUpdate(
       product?._id,
@@ -96,7 +100,7 @@ const getSaleHistory = async (period: string) => {
   return result;
 };
 
-export const SaleServiceas = {
+export const SaleServices = {
   createSaleService,
   getSaleHistory,
 };
