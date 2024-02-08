@@ -28,7 +28,7 @@ const createSaleService = async (payload: TSale) => {
     );
 
     // create the new sale
-    const result = await SaleModel.create(payload, { session });
+    const result = await SaleModel.create([payload], { session });
 
     await session.commitTransaction();
     await session.endSession();
@@ -78,23 +78,24 @@ const getSaleHistory = async (period: string) => {
         sales: { $push: '$$ROOT' },
       },
     },
+    { $unwind: '$sales' },
+    { $sort: { 'sales.quantity': -1 } },
+    { $limit: 5 },
     {
-      $project: {
-        totalItemsSold: 1,
-        totalSaleValue: 1,
-        sales: {
-          $sort: { quantity: -1 },
-        },
+      $group: {
+        _id: null,
+        totalItemsSold: { $first: '$totalItemsSold' },
+        totalSaleValue: { $first: '$totalSaleValue' },
+        soldItemsSorted: { $push: '$sales' },
       },
     },
-    { $limit: 5 },
-  ];
+  ] as any[];
 
   const salesByPeriod = await SaleModel.aggregate(aggregationPipeline);
 
   const totalItemsSold = salesByPeriod[0]?.totalItemsSold || 0;
   const totalSaleValue = salesByPeriod[0]?.totalSaleValue || 0;
-  const soldItemsSorted = salesByPeriod[0]?.sales || [];
+  const soldItemsSorted = salesByPeriod[0]?.soldItemsSorted || [];
 
   const result = { totalItemsSold, totalSaleValue, soldItemsSorted };
   return result;
