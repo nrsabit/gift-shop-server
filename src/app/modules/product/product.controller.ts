@@ -13,7 +13,7 @@ const createProductcontroller = requestHandler(async (req, res) => {
 });
 
 const getAllProductsController = requestHandler(async (req, res) => {
-  const result = await ProductServices.getAllProductsService();
+  const result = await ProductServices.getAllProductsService(req.query);
   responseHandler(res, {
     statusCode: 200,
     success: true,

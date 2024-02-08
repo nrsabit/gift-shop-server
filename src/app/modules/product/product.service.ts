@@ -6,8 +6,49 @@ const createProductService = async (payload: TProduct) => {
   return result;
 };
 
-const getAllProductsService = async () => {
-  const result = await ProductModel.find();
+const getAllProductsService = async (query: Record<string, unknown>) => {
+  const {
+    minPrice,
+    maxPrice,
+    occasion,
+    category,
+    name,
+    brand,
+    color,
+    material,
+  } = query;
+
+  const matchQueries: Record<string, unknown> = {};
+  if (occasion) {
+    matchQueries.occasion = { $regex: occasion, $options: 'i' };
+  }
+  if (category) {
+    matchQueries.category = { $regex: category, $options: 'i' };
+  }
+  if (name) {
+    matchQueries.productName = { $regex: name, $options: 'i' };
+  }
+  if (brand) {
+    matchQueries.brand = { $regex: brand, $options: 'i' };
+  }
+  if (color) {
+    matchQueries.color = { $regex: color, $options: 'i' };
+  }
+  if (material) {
+    matchQueries.material = { $regex: material, $options: 'i' };
+  }
+  if (minPrice || maxPrice) {
+    const productPrice: Record<string, unknown> = {};
+    if (minPrice) {
+      productPrice.$gte = Number(minPrice);
+    }
+    if (maxPrice) {
+      productPrice.$lte = Number(maxPrice);
+    }
+    matchQueries.productPrice = productPrice;
+  }
+
+  const result = await ProductModel.find(matchQueries);
   return result;
 };
 
@@ -31,5 +72,5 @@ export const ProductServices = {
   getAllProductsService,
   updateProductService,
   deleteProductService,
-  getSingleProductService
+  getSingleProductService,
 };
