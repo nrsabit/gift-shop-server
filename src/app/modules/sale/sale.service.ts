@@ -1,15 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import moment from 'moment';
 import { ProductModel } from '../product/product.model';
 import { TSale } from './sale.interface';
 import { SaleModel } from './sale.model';
+import mongoose from 'mongoose';
 
 const createSaleService = async (payload: TSale) => {
-  const product = await ProductModel.findById(payload.product);
-  if (payload.quantity > product!.productQuantity) {
-    throw new Error(`Only ${product?.productQuantity} Items Available..!!`);
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const product = await ProductModel.findById(payload.product);
+    if (payload.quantity > product!.productQuantity) {
+      throw new Error(`Only ${product?.productQuantity} Items Available..!!`);
+    }
+
+    // update the product quantity
+    await ProductModel.findByIdAndUpdate(
+      product?._id,
+      {
+        productQuantity: product!.productQuantity - payload.quantity,
+      },
+      { new: true, runValidators: true, session },
+    );
+
+    // create the new sale
+    const result = await SaleModel.create(payload, { session });
+
+    await session.commitTransaction();
+    await session.endSession();
+    return result;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
   }
-  const result = await SaleModel.create(payload);
-  return result;
 };
 
 const getSaleHistory = async (period: string) => {
