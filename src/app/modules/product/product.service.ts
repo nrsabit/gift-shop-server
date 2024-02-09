@@ -47,6 +47,7 @@ const getAllProductsService = async (query: Record<string, unknown>) => {
     }
     matchQueries.productPrice = productPrice;
   }
+  matchQueries.productQuantity = { productQuantity: { $gt: 0 } };
 
   const result = await ProductModel.find(matchQueries);
   return result;
