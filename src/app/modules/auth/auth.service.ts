@@ -5,22 +5,27 @@ import { UserModel } from './auth.model';
 import jwt from 'jsonwebtoken';
 
 const register = async (payload: TUser) => {
-  const isUserExists = await UserModel.findOne({ userName: payload.userName });
-  if (isUserExists) {
-    throw new Error('User Already Exists');
+
+  const isUserExists: TUser | null = await UserModel.findOne({
+    $or: [{ userName: payload.userName }, { email: payload.email }],
+  });
+
+  if ( !isUserExists) {
+    // encrypt the password
+    const hashedPassword = await bcrypt.hash(
+      payload.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+
+    payload.password = hashedPassword;
+
+    const newUser = await UserModel.create(payload);
+    const result = await UserModel.findById(newUser._id).select('-password');
+    return result;
+  } else {
+    throw new Error('User already exists with this email or username');
   }
 
-  // encrypt the password
-  const hashedPassword = await bcrypt.hash(
-    payload.password,
-    Number(config.bcrypt_salt_rounds),
-  );
-
-  payload.password = hashedPassword;
-
-  const newUser = await UserModel.create(payload);
-  const result = await UserModel.findById(newUser._id).select('-password');
-  return result;
 };
 
 const login = async (payload: TLogin) => {
@@ -49,9 +54,8 @@ const login = async (payload: TLogin) => {
   const token = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: '10d',
   });
-  const user = await UserModel.findById(isUserExists._id).select('-password');
 
-  return { user, token };
+  return { token };
 };
 
 export const AuthServices = {
