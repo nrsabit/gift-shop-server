@@ -7,6 +7,7 @@ const saleSchema = new Schema<TSale>(
     quantity: { type: Number, required: true },
     salePrice: { type: Number },
     buyerName: { type: String, required: true },
+    saleDate: { type: Date, required: true },
   },
   { timestamps: true },
 );

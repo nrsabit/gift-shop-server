@@ -68,10 +68,16 @@ const deleteProductService = async (id: string) => {
   return result;
 };
 
+const deleteSelectedProductService = async (ids: string[]) => {
+  const result = await ProductModel.deleteMany({ _id: { $in: ids } });
+  return result;
+};
+
 export const ProductServices = {
   createProductService,
   getAllProductsService,
   updateProductService,
   deleteProductService,
   getSingleProductService,
+  deleteSelectedProductService,
 };

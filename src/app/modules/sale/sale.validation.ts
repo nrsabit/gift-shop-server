@@ -4,7 +4,8 @@ const createSaleValidationSchema = z.object({
   body: z.object({
     product: z.string(),
     quantity: z.number(),
-    buyerName : z.string()
+    buyerName: z.string(),
+    saleDate: z.date(),
   }),
 });
 

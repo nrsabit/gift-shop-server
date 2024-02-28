@@ -19,6 +19,12 @@ router.post(
 
 router.delete('/:id', auth(), ProductControllers.deleteProductController);
 
+router.delete(
+  '/bulk-delete',
+  auth(),
+  ProductControllers.deleteSelectedProductController,
+);
+
 router.patch(
   '/:id',
   auth(),

@@ -55,10 +55,21 @@ const deleteProductController = requestHandler(async (req, res) => {
   });
 });
 
+const deleteSelectedProductController = requestHandler(async (req, res) => {
+  const result = await ProductServices.deleteSelectedProductService(req.body);
+  responseHandler(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Products are Deleted Successfully',
+    data: result,
+  });
+});
+
 export const ProductControllers = {
   createProductcontroller,
   getAllProductsController,
   updateProductController,
   deleteProductController,
   getSingleProductController,
+  deleteSelectedProductController,
 };

@@ -5,4 +5,5 @@ export type TSale = {
   quantity: number;
   salePrice?: number;
   buyerName: string;
+  saleDate : Date;
 };
