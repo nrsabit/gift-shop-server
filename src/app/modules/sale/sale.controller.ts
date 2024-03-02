@@ -7,7 +7,7 @@ const createProductcontroller = requestHandler(async (req, res) => {
   responseHandler(res, {
     statusCode: 200,
     success: true,
-    message: 'Sale is Created Successfully',
+    message: 'Item Sold Successfully',
     data: result,
   });
 });

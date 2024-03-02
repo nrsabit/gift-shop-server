@@ -11,19 +11,19 @@ router.get('/', auth(), ProductControllers.getAllProductsController);
 router.get('/:id', auth(), ProductControllers.getSingleProductController);
 
 router.post(
-  '/',
+  '/create-product',
   auth(),
   requestValidator(productValidations.createProductValidationSchema),
   ProductControllers.createProductcontroller,
 );
-
-router.delete('/:id', auth(), ProductControllers.deleteProductController);
 
 router.delete(
   '/bulk-delete',
   auth(),
   ProductControllers.deleteSelectedProductController,
 );
+
+router.delete('/:id', auth(), ProductControllers.deleteProductController);
 
 router.patch(
   '/:id',

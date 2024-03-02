@@ -1,3 +1,5 @@
+import QueryBuilder from '../../builder/QueryBuilder';
+import { ProductSearchableFields } from './product.constant';
 import { TProduct } from './product.interface';
 import { ProductModel } from './product.model';
 
@@ -7,49 +9,11 @@ const createProductService = async (payload: TProduct) => {
 };
 
 const getAllProductsService = async (query: Record<string, unknown>) => {
-  const {
-    minPrice,
-    maxPrice,
-    occasion,
-    category,
-    name,
-    brand,
-    color,
-    material,
-  } = query;
+  const productsQuery = new QueryBuilder(ProductModel.find(), query)
+    .search(ProductSearchableFields)
+    .filter();
 
-  const matchQueries: Record<string, unknown> = {};
-  if (occasion) {
-    matchQueries.occasion = { $regex: occasion, $options: 'i' };
-  }
-  if (category) {
-    matchQueries.category = { $regex: category, $options: 'i' };
-  }
-  if (name) {
-    matchQueries.productName = { $regex: name, $options: 'i' };
-  }
-  if (brand) {
-    matchQueries.brand = { $regex: brand, $options: 'i' };
-  }
-  if (color) {
-    matchQueries.color = { $regex: color, $options: 'i' };
-  }
-  if (material) {
-    matchQueries.material = { $regex: material, $options: 'i' };
-  }
-  if (minPrice || maxPrice) {
-    const productPrice: Record<string, unknown> = {};
-    if (minPrice) {
-      productPrice.$gte = Number(minPrice);
-    }
-    if (maxPrice) {
-      productPrice.$lte = Number(maxPrice);
-    }
-    matchQueries.productPrice = productPrice;
-  }
-  matchQueries.productQuantity = { $gt: 0 };
-
-  const result = await ProductModel.find(matchQueries);
+  const result = await productsQuery.modelQuery;
   return result;
 };
 

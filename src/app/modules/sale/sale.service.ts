@@ -69,7 +69,7 @@ const getSaleHistory = async (period: string) => {
 
   // the pipeline to aggregate and retrieve the sale value.
   const aggregationPipeline = [
-    { $match: { createdAt: { $gte: startDate, $lte: endDate } } },
+    { $match: { saleDate: { $gte: startDate, $lte: endDate } } },
     {
       $group: {
         _id: null,
@@ -87,6 +87,14 @@ const getSaleHistory = async (period: string) => {
         totalItemsSold: { $first: '$totalItemsSold' },
         totalSaleValue: { $first: '$totalSaleValue' },
         soldItemsSorted: { $push: '$sales' },
+      },
+    },
+    {
+      $lookup: {
+        from: 'products',
+        localField: 'soldItemsSorted.product',
+        foreignField: '_id',
+        as: 'populatedProducts',
       },
     },
   ] as any[];
