@@ -4,13 +4,13 @@ import bcrypt from 'bcrypt';
 import { UserModel } from './auth.model';
 import jwt from 'jsonwebtoken';
 
+// service for creating a new account
 const register = async (payload: TUser) => {
-
   const isUserExists: TUser | null = await UserModel.findOne({
     $or: [{ userName: payload.userName }, { email: payload.email }],
   });
 
-  if ( !isUserExists) {
+  if (!isUserExists) {
     // encrypt the password
     const hashedPassword = await bcrypt.hash(
       payload.password,
@@ -25,9 +25,9 @@ const register = async (payload: TUser) => {
   } else {
     throw new Error('User already exists with this email or username');
   }
-
 };
 
+// service for logging in
 const login = async (payload: TLogin) => {
   // check the user is exists or not.
   const isUserExists = await UserModel.findOne({ email: payload.email });

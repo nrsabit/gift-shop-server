@@ -6,6 +6,9 @@ class QueryBuilder<T> {
     public query: Record<string, unknown>,
   ) {}
 
+
+  // building the query for search
+
   search(searchableFields: string[]) {
     const searchTerm = this?.query?.searchTerm;
     if (searchTerm) {
@@ -22,18 +25,24 @@ class QueryBuilder<T> {
     return this;
   }
 
+  // building the query for filter
+
   filter() {
     const queryObj = { ...this.query };
-    const excludedQueries = ['email', 'sort', 'limit', 'page', 'fields'];
-    excludedQueries.forEach(element => delete queryObj[element]);
+
+    if (this.query?.searchTerm) {
+      delete queryObj['searchTerm'];
+    }
 
     if (queryObj.minPrice || queryObj.maxPrice) {
       const productPrice: Record<string, unknown> = {};
       if (queryObj.minPrice) {
         productPrice.$gte = Number(queryObj.minPrice);
+        delete queryObj.minPrice;
       }
       if (queryObj.maxPrice) {
         productPrice.$lte = Number(queryObj.maxPrice);
+        delete queryObj.maxPrice;
       }
       queryObj.productPrice = productPrice;
     }

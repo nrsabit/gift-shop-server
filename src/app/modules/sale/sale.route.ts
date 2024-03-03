@@ -6,8 +6,10 @@ import auth from '../../middlewares/auth';
 
 const router = Router();
 
+// getting the sales history based on period
 router.get('/:period', auth(), SaleControllers.saleHistoryController);
 
+// selling an item.
 router.post(
   '/',
   auth(),

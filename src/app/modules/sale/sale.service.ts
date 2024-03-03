@@ -5,6 +5,7 @@ import { TSale } from './sale.interface';
 import { SaleModel } from './sale.model';
 import mongoose from 'mongoose';
 
+// selling an item
 const createSaleService = async (payload: TSale) => {
   const session = await mongoose.startSession();
   try {
@@ -40,6 +41,7 @@ const createSaleService = async (payload: TSale) => {
   }
 };
 
+// getting sales history based on period
 const getSaleHistory = async (period: string) => {
   let startDate: Date;
   let endDate: Date;

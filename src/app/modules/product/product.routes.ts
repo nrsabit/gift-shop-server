@@ -6,10 +6,13 @@ import auth from '../../middlewares/auth';
 
 const router = Router();
 
+// getting all products
 router.get('/', auth(), ProductControllers.getAllProductsController);
 
+// getting single product
 router.get('/:id', auth(), ProductControllers.getSingleProductController);
 
+// creating a new product
 router.post(
   '/create-product',
   auth(),
@@ -17,14 +20,17 @@ router.post(
   ProductControllers.createProductcontroller,
 );
 
+// deleting a list of products
 router.delete(
   '/bulk-delete',
   auth(),
   ProductControllers.deleteSelectedProductController,
 );
 
+// deleting a product
 router.delete('/:id', auth(), ProductControllers.deleteProductController);
 
+// updating a product
 router.patch(
   '/:id',
   auth(),
