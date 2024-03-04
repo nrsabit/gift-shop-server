@@ -75,6 +75,16 @@ const createCouponController = requestHandler(async (req, res) => {
   });
 });
 
+const verifyCouponController = requestHandler(async (req, res) => {
+  const result = await ProductServices.verifyCouponService(req?.body?.code);
+  responseHandler(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Coupon is Matched Successfully',
+    data: result,
+  });
+});
+
 export const ProductControllers = {
   createProductcontroller,
   createCouponController,
@@ -82,5 +92,6 @@ export const ProductControllers = {
   updateProductController,
   deleteProductController,
   getSingleProductController,
+  verifyCouponController,
   deleteSelectedProductController,
 };

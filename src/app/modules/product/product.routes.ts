@@ -20,6 +20,13 @@ router.get(
   ProductControllers.getSingleProductController,
 );
 
+// verifying a coupon
+router.post(
+  '/verify-coupon',
+  auth('manager', 'seller'),
+  ProductControllers.verifyCouponController,
+);
+
 // creating a new product
 router.post(
   '/create-product',

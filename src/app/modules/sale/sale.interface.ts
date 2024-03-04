@@ -8,4 +8,5 @@ export type TSale = {
   buyerName: string;
   saleDate: Date;
   seller: Types.ObjectId;
+  discountPercentage?: number;
 };

@@ -49,6 +49,12 @@ const createCouponService = async (payload: TCoupon) => {
   return result;
 };
 
+// getting a single product
+const verifyCouponService = async (code: string) => {
+  const result = await CouponModel.findOne({ code });
+  return result;
+};
+
 export const ProductServices = {
   createProductService,
   createCouponService,
@@ -56,5 +62,6 @@ export const ProductServices = {
   updateProductService,
   deleteProductService,
   getSingleProductService,
+  verifyCouponService,
   deleteSelectedProductService,
 };

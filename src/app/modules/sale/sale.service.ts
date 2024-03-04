@@ -32,6 +32,15 @@ const createSaleService = async (payload: TSale) => {
     const salePrice = product!.productPrice * payload.quantity;
     payload.salePrice = salePrice;
 
+    // apply discount if available.
+    if (payload.discountPercentage) {
+      payload.salePrice =
+        payload.salePrice -
+        (payload.salePrice * payload.discountPercentage) / 100;
+
+      delete payload.discountPercentage;
+    }
+
     // update the product quantity
     await ProductModel.findByIdAndUpdate(
       product?._id,
@@ -41,7 +50,7 @@ const createSaleService = async (payload: TSale) => {
         },
         $addToSet: {
           recipients: payload.buyerName,
-        }
+        },
       },
       { new: true, runValidators: true, session },
     );
