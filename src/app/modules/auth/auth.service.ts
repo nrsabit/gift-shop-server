@@ -44,11 +44,12 @@ const login = async (payload: TLogin) => {
     throw new Error('Password did not match');
   }
 
-  const { _id, userName, email } = isUserExists;
+  const { _id, userName, email, role } = isUserExists;
   const jwtPayload = {
     _id,
     userName,
     email,
+    role
   };
 
   const token = jwt.sign(jwtPayload, config.jwt_access_secret as string, {

@@ -7,12 +7,16 @@ import auth from '../../middlewares/auth';
 const router = Router();
 
 // getting the sales history based on period
-router.get('/:period', auth(), SaleControllers.saleHistoryController);
+router.get(
+  '/:period',
+  auth('manager', 'seller'),
+  SaleControllers.saleHistoryController,
+);
 
 // selling an item.
 router.post(
   '/',
-  auth(),
+  auth('manager', 'seller'),
   requestValidator(SaleValidations.createSaleValidationSchema),
   SaleControllers.createProductcontroller,
 );

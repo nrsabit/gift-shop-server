@@ -7,15 +7,23 @@ import auth from '../../middlewares/auth';
 const router = Router();
 
 // getting all products
-router.get('/', auth(), ProductControllers.getAllProductsController);
+router.get(
+  '/',
+  auth('manager', 'seller'),
+  ProductControllers.getAllProductsController,
+);
 
 // getting single product
-router.get('/:id', auth(), ProductControllers.getSingleProductController);
+router.get(
+  '/:id',
+  auth('manager', 'seller'),
+  ProductControllers.getSingleProductController,
+);
 
 // creating a new product
 router.post(
   '/create-product',
-  auth(),
+  auth('manager'),
   requestValidator(productValidations.createProductValidationSchema),
   ProductControllers.createProductcontroller,
 );
@@ -23,7 +31,7 @@ router.post(
 // deleting a list of products
 router.delete(
   '/bulk-delete',
-  auth(),
+  auth('manager'),
   ProductControllers.deleteSelectedProductController,
 );
 
@@ -33,7 +41,7 @@ router.delete('/:id', auth(), ProductControllers.deleteProductController);
 // updating a product
 router.patch(
   '/:id',
-  auth(),
+  auth('manager'),
   requestValidator(productValidations.updateProductValidationSchema),
   ProductControllers.updateProductController,
 );
