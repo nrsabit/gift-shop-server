@@ -65,8 +65,19 @@ const deleteSelectedProductController = requestHandler(async (req, res) => {
   });
 });
 
+const createCouponController = requestHandler(async (req, res) => {
+  const result = await ProductServices.createCouponService(req.body);
+  responseHandler(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Coupon is Created Successfully',
+    data: result,
+  });
+});
+
 export const ProductControllers = {
   createProductcontroller,
+  createCouponController,
   getAllProductsController,
   updateProductController,
   deleteProductController,

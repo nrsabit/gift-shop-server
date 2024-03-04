@@ -6,7 +6,6 @@ class QueryBuilder<T> {
     public query: Record<string, unknown>,
   ) {}
 
-
   // building the query for search
 
   search(searchableFields: string[]) {
@@ -32,6 +31,13 @@ class QueryBuilder<T> {
 
     if (this.query?.searchTerm) {
       delete queryObj['searchTerm'];
+    }
+
+    if (queryObj?.recipient) {
+      queryObj.recipients = {
+        $elemMatch: { $regex: new RegExp(queryObj?.recipient as string, 'i') },
+      };
+      delete queryObj.recipient;
     }
 
     if (queryObj.minPrice || queryObj.maxPrice) {

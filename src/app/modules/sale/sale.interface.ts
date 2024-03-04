@@ -2,9 +2,10 @@ import { Types } from 'mongoose';
 
 export type TSale = {
   product: Types.ObjectId;
-  productName : string;
+  productName: string;
   quantity: number;
   salePrice?: number;
   buyerName: string;
-  saleDate : Date;
+  saleDate: Date;
+  seller: Types.ObjectId;
 };

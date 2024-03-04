@@ -7,6 +7,7 @@ const createSaleValidationSchema = z.object({
     quantity: z.number(),
     buyerName: z.string(),
     saleDate: z.string().datetime(),
+    seller : z.string()
   }),
 });
 

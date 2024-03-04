@@ -4,6 +4,19 @@ import { ProductModel } from '../product/product.model';
 import { TSale } from './sale.interface';
 import { SaleModel } from './sale.model';
 import mongoose from 'mongoose';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { saleSearchableFields } from './sale.constant';
+
+// get all sales.
+const getAllSalesService = async (query: Record<string, unknown>) => {
+  const salesQuery = new QueryBuilder(
+    ProductModel.find().populate('seller'),
+    query,
+  ).search(saleSearchableFields);
+
+  const result = await salesQuery.modelQuery;
+  return result;
+};
 
 // selling an item
 const createSaleService = async (payload: TSale) => {
@@ -23,7 +36,12 @@ const createSaleService = async (payload: TSale) => {
     await ProductModel.findByIdAndUpdate(
       product?._id,
       {
-        productQuantity: product!.productQuantity - payload.quantity,
+        $set: {
+          productQuantity: product!.productQuantity - payload.quantity,
+        },
+        $addToSet: {
+          recipients: payload.buyerName,
+        }
       },
       { new: true, runValidators: true, session },
     );
@@ -114,4 +132,5 @@ const getSaleHistory = async (period: string) => {
 export const SaleServices = {
   createSaleService,
   getSaleHistory,
+  getAllSalesService,
 };

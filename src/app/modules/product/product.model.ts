@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TProduct } from './product.interface';
+import { TCoupon, TProduct } from './product.interface';
 
 const productSchema = new Schema<TProduct>(
   {
@@ -12,8 +12,19 @@ const productSchema = new Schema<TProduct>(
     brand: { type: String, required: true },
     material: { type: String, required: true },
     color: { type: String, required: true },
+    recipients: { type: [String], default: [] },
+  },
+  { timestamps: true },
+);
+
+const couponSchema = new Schema<TCoupon>(
+  {
+    code: { type: String, required: true },
+    percentage: { type: Number, required: true },
   },
   { timestamps: true },
 );
 
 export const ProductModel = model<TProduct>('Product', productSchema);
+
+export const CouponModel = model<TCoupon>('Coupon', couponSchema);

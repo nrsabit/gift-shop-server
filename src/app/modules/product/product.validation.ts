@@ -14,6 +14,13 @@ const createProductValidationSchema = z.object({
   }),
 });
 
+const createCouponValidationSchema = z.object({
+  body: z.object({
+    code: z.string(),
+    percentage: z.number(),
+  }),
+});
+
 const updateProductValidationSchema = z.object({
   body: z.object({
     productName: z.string().optional(),
@@ -30,5 +37,6 @@ const updateProductValidationSchema = z.object({
 
 export const productValidations = {
   createProductValidationSchema,
+  createCouponValidationSchema,
   updateProductValidationSchema,
 };

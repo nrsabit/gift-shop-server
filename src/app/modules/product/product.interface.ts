@@ -8,4 +8,10 @@ export type TProduct = {
   brand: string;
   material: string;
   color: string;
+  recipients?: string[];
+};
+
+export type TCoupon = {
+  code: string;
+  percentage: number;
 };

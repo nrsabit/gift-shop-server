@@ -28,6 +28,14 @@ router.post(
   ProductControllers.createProductcontroller,
 );
 
+// creating a new coupon
+router.post(
+  '/create-coupon',
+  auth('manager'),
+  requestValidator(productValidations.createCouponValidationSchema),
+  ProductControllers.createCouponController,
+);
+
 // deleting a list of products
 router.delete(
   '/bulk-delete',

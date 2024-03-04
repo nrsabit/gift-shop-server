@@ -6,6 +6,13 @@ import auth from '../../middlewares/auth';
 
 const router = Router();
 
+// getting all sales
+router.get(
+  '/',
+  auth('manager', 'seller'),
+  SaleControllers.getAllSalesController,
+);
+
 // getting the sales history based on period
 router.get(
   '/:period',

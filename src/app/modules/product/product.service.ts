@@ -1,7 +1,7 @@
 import QueryBuilder from '../../builder/QueryBuilder';
 import { ProductSearchableFields } from './product.constant';
-import { TProduct } from './product.interface';
-import { ProductModel } from './product.model';
+import { TCoupon, TProduct } from './product.interface';
+import { CouponModel, ProductModel } from './product.model';
 
 // creating a new product
 const createProductService = async (payload: TProduct) => {
@@ -43,8 +43,15 @@ const deleteSelectedProductService = async (ids: string[]) => {
   return result;
 };
 
+// creating a new coupon
+const createCouponService = async (payload: TCoupon) => {
+  const result = await CouponModel.create(payload);
+  return result;
+};
+
 export const ProductServices = {
   createProductService,
+  createCouponService,
   getAllProductsService,
   updateProductService,
   deleteProductService,

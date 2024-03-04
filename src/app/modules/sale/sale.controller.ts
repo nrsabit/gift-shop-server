@@ -23,7 +23,18 @@ const saleHistoryController = requestHandler(async (req, res) => {
   });
 });
 
+const getAllSalesController = requestHandler(async (req, res) => {
+  const result = await SaleServices.getAllSalesService(req.query);
+  responseHandler(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Sale are Retreaved Succeccfully',
+    data: result,
+  });
+});
+
 export const SaleControllers = {
   createProductcontroller,
   saleHistoryController,
+  getAllSalesController,
 };
