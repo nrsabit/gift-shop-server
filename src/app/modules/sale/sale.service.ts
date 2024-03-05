@@ -10,7 +10,7 @@ import { saleSearchableFields } from './sale.constant';
 // get all sales.
 const getAllSalesService = async (query: Record<string, unknown>) => {
   const salesQuery = new QueryBuilder(
-    ProductModel.find().populate('seller'),
+    SaleModel.find().populate('seller'),
     query,
   ).search(saleSearchableFields);
 
