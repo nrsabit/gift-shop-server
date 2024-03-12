@@ -51,7 +51,7 @@ router.delete(
 );
 
 // deleting a product
-router.delete('/:id', auth(), ProductControllers.deleteProductController);
+router.delete('/:id', auth('manager'), ProductControllers.deleteProductController);
 
 // updating a product
 router.patch(
